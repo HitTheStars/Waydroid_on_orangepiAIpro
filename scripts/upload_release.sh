@@ -17,7 +17,10 @@ API="https://api.github.com/repos/$REPO"
 UP="https://uploads.github.com/repos/$REPO"
 TEST=0; [ "${1:-}" = "--test" ] && TEST=1
 
-[ -z "${GH_TOKEN:-}" ] && { echo "缺 GH_TOKEN。export GH_TOKEN=... 再来"; exit 1; }
+# token 来源：环境变量优先，否则读 ~/.gh_token（chmod 600）
+[ -z "${GH_TOKEN:-}" ] && [ -r "$HOME/.gh_token" ] && GH_TOKEN=$(tr -d ' \r\n' < "$HOME/.gh_token")
+[ -z "${GH_TOKEN:-}" ] && { echo "缺 GH_TOKEN（或 ~/.gh_token）"; exit 1; }
+export GH_TOKEN
 command -v curl >/dev/null || { echo "缺 curl"; exit 1; }
 
 api(){ curl -sS --http1.1 -H "Authorization: Bearer $GH_TOKEN" \
@@ -52,31 +55,38 @@ else
 fi
 
 upload(){ # $1=本地文件 $2=资产名
-  local f=$1 name=$2 sz
-  sz=$($SUDO stat -c%s "$f")
-  echo "  ↑ $name  ($(echo "scale=1;$sz/1048576" | bc) MB)"
+  local f=$1 name=$2 sz rc
+  sz=$(stat -c%s "$f" 2>/dev/null) || sz=$(sudo -n stat -c%s "$f" 2>/dev/null) || sz=0
+  echo "  ↑ $name  ($(awk -v s=$sz 'BEGIN{printf "%.1f", s/1048576}') MB)"
   # 已存在同名资产则先删，避免 422
   OLD=$(api "$API/releases/$REL_ID/assets" | python3 -c "
 import sys,json
 for a in json.load(sys.stdin):
     if a['name']=='$name': print(a['id'])" 2>/dev/null)
   [ -n "${OLD:-}" ] && { api -X DELETE "$API/releases/assets/$OLD" >/dev/null; echo "    删除旧资产 $OLD"; }
+  rm -f /tmp/rel_up.json
+  # 关键：用 --upload-file 流式发送，--data-binary @file 会把整个文件读进内存（1.9G 直接 OOM）
   curl -sS --http1.1 --progress-bar -X POST \
     -H "Authorization: Bearer $GH_TOKEN" \
     -H "Content-Type: application/octet-stream" \
     -H "Accept: application/vnd.github+json" \
-    --expect100-timeout 30 --retry 2 --retry-delay 10 \
-    --data-binary "@$f" "$UP/releases/$REL_ID/assets?name=$name" -o /tmp/rel_up.json
-  python3 - <<PY
-import json
+    --expect100-timeout 30 --retry 5 --retry-all-errors --retry-delay 8 \
+    --upload-file "$f" "$UP/releases/$REL_ID/assets?name=$name" -o /tmp/rel_up.json
+  rc=$?
+  if [ $rc -ne 0 ]; then echo "     ❌ curl 退出码 $rc（可重跑本脚本续传，已存在同名资产会先删）"; return 1; fi
+  python3 - "$sz" <<'PY'
+import json,sys
+exp=int(sys.argv[1])
 try:
     d=json.load(open("/tmp/rel_up.json"))
-    if d.get("state")=="uploaded" or d.get("size"):
-        print(f"     ✅ {d.get('name')}  {d.get('size'):,}B  {d.get('browser_download_url')}")
-    else:
-        print("     ❌", str(d)[:300])
-except Exception as e:
-    print("     ❌ 解析失败:", e, open("/tmp/rel_up.json").read()[:200])
+except Exception:
+    print("     ❌ 无响应内容"); raise SystemExit(1)
+got=d.get("size")
+if d.get("state")=="uploaded" and got==exp:
+    print(f"     ✅ {d['name']}  {got:,}B  {d['browser_download_url']}")
+else:
+    print(f"     ❌ 状态={d.get('state')} 期望{exp:,}B 实得{got}  {str(d.get('errors',''))[:200]}")
+    raise SystemExit(1)
 PY
 }
 
@@ -89,10 +99,17 @@ if [ "$TEST" = "1" ]; then
   echo "探针通过 → release 页面: https://github.com/$REPO/releases/tag/$TAG"
   exit 0
 fi
+FAIL=0
 for n in system vendor; do
-  upload "$IMG_DIR/$n.img" "$n.img"
+  upload "$IMG_DIR/$n.img" "$n.img" || FAIL=1
 done
 echo
+echo "== 复核 release 资产 =="
+api "$API/releases/$REL_ID/assets" | python3 -c '
+import sys,json
+for a in json.load(sys.stdin):
+    print("  {:14s} {:>13,}B  {}".format(a["name"], a["size"], a["state"]))'
+[ $FAIL -ne 0 ] && { echo "有失败项，重跑本脚本会续传（同名资产先删再传）"; exit 1; }
 echo "完成。校验方式（下载方）:"
 echo "  sha256sum -c state/assets.sha256 --ignore-missing"
 echo "release: https://github.com/$REPO/releases/tag/$TAG"

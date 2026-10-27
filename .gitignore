@@ -15,3 +15,5 @@
 /.tmp_versions/
 __pycache__/
 *.pyc
+# 凭据：永不入库
+.gh_token

@@ -5,7 +5,7 @@
 
 ---
 
-## 零、当前状态（2026-10-28 05:40 更新）
+## 零、当前状态（2026-10-28 05:57 更新）
 
 | 项 | 状态 |
 |---|---|
@@ -19,6 +19,26 @@
 **要查历史踩坑全记录** → 看 [`STATUS.md`](STATUS.md)（8 万字，按时间倒序）。
 
 > 仓库只放代码与可重建的配置快照。镜像 / APK 等大件不入库，校验清单在 `state/assets.sha256`。
+
+### 镜像下载（GitHub 不支持大文件入库）
+
+`system.img` 1.86 GiB、`vendor.img` 402 MiB 都超过 GitHub **单文件 100MB 硬上限**，git 里放不进去（LFS 免费额度 1GB 也不够）。所以走 **Release 资产**（上限 2GiB/文件）：
+
+```bash
+# 拉回来（任选目录）
+gh release download v1-20261027-images --repo HitTheStars/Waydroid_on_orangepiAIpro \
+   --pattern '*.img' -D /root/wd-img-backup-1027_2222
+# 或者直接 curl
+curl -LO https://github.com/HitTheStars/Waydroid_on_orangepiAIpro/releases/download/v1-20261027-images/system.img
+curl -LO https://github.com/HitTheStars/Waydroid_on_orangepiAIpro/releases/download/v1-20261027-images/vendor.img
+
+# 校验（仓库里带 sha256 清单）
+sha256sum -c state/assets.sha256 --ignore-missing
+```
+
+- Release 页面：<https://github.com/HitTheStars/Waydroid_on_orangepiAIpro/releases/tag/v1-20261027-images>
+- 上传/重传脚本：`scripts/upload_release.sh`（token 从 `~/.gh_token` 或 `$GH_TOKEN` 读，`--test` 先验链路）
+- 传上去的两个镜像已用 HTTP Range 对首尾各 4MB 做过 sha256 比对，与本地备份一致
 
 ---
 
