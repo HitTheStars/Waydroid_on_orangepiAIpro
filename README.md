@@ -5,6 +5,23 @@
 
 ---
 
+## 零、当前状态（2026-10-28 05:40 更新）
+
+| 项 | 状态 |
+|---|---|
+| binder / ashmem | ✅ 已解决。树外模块 `binder_linux_nofs.ko` + `ashmem_mod.ko`，insmod 即得 `/dev/binder` |
+| Waydroid | ✅ 1.6.3 + **纯 arm64 镜像**（本机无 AArch32 执行能力，见 `STATUS.md` 「⛔ 定论」） |
+| Android | ✅ 曾正常起 Android 13（720x503, density 180），DRM 出画面，adb over TCP 可用 |
+| 明日方舟 | ⬜ 未安装。APK 已就绪 1.86GB，等容器起来后 adb install |
+| 已知风险 | ⚠️ 低功耗模块 `lpm` 读电流失败会触发整机 panic 重启（`DRV_LPM_FAULT`），重负载下高频 |
+
+**要在这台机器上重新跑起来** → 看 [`RESTORE.md`](RESTORE.md)（含干净系统恢复、一键 `restore.sh`、自检 `verify_restore.sh`）。
+**要查历史踩坑全记录** → 看 [`STATUS.md`](STATUS.md)（8 万字，按时间倒序）。
+
+> 仓库只放代码与可重建的配置快照。镜像 / APK 等大件不入库，校验清单在 `state/assets.sha256`。
+
+---
+
 ## 一、硬件与系统事实（已实测）
 
 | 项目 | 实测值 |
