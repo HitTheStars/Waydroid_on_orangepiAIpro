@@ -1,0 +1,10 @@
+--- /root 镜像备份目录 ---
+总计 2.3G
+-rw-r--r-- 1 root root 1.9G  9月 27 11:28 system.img
+-rw-r--r-- 1 root root 403M 10月 27 19:10 vendor.img
+410bb605bc27b0a0610b924555bfba08  /root/wd-img-backup-1027_2222/system.img
+4ba49f5ea81523ec9db9d9ef6fa3df32  /root/wd-img-backup-1027_2222/vendor.img
+--- /usr/share/waydroid-extra/images（原始包）---
+总计 2.0G
+-rw-r--r-- 1 root root 1.6G  9月 27 14:57 system.img
+-rw-r--r-- 1 root root 403M  9月 27 13:26 vendor.img

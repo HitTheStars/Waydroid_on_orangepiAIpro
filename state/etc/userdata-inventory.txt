@@ -1,0 +1,6 @@
+=== rootfs/data 体积 ===
+4.0K	/var/lib/waydroid/rootfs/data
+=== launcher 数据库（当前生效）===
+=== 已装第三方应用 ===
+=== data/data 条目数 ===
+0

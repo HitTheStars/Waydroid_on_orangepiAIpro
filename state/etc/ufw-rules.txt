@@ -1,0 +1,25 @@
+状态： 激活
+
+     至                          动作          来自
+     -                          --          --
+[ 1] 22/tcp                     ALLOW IN    Anywhere                  
+[ 2] 6197/tcp                   ALLOW IN    Anywhere                  
+[ 3] 6199/tcp                   ALLOW IN    Anywhere                  
+[ 4] 6185/tcp                   ALLOW IN    Anywhere                  
+[ 5] 8888/tcp                   ALLOW IN    Anywhere                  
+[ 6] 67/udp on waydroid0        ALLOW IN    Anywhere                  
+[ 7] 53/udp on waydroid0        ALLOW IN    Anywhere                  
+[ 8] 53/tcp on waydroid0        ALLOW IN    Anywhere                  
+[ 9] Anywhere                   ALLOW FWD   Anywhere on waydroid0     
+[10] Anywhere on waydroid0      ALLOW FWD   Anywhere                   (out)
+[11] 22/tcp (v6)                ALLOW IN    Anywhere (v6)             
+[12] 6197/tcp (v6)              ALLOW IN    Anywhere (v6)             
+[13] 6199/tcp (v6)              ALLOW IN    Anywhere (v6)             
+[14] 6185/tcp (v6)              ALLOW IN    Anywhere (v6)             
+[15] 8888/tcp (v6)              ALLOW IN    Anywhere (v6)             
+[16] 67/udp (v6) on waydroid0   ALLOW IN    Anywhere (v6)             
+[17] 53/udp (v6) on waydroid0   ALLOW IN    Anywhere (v6)             
+[18] 53/tcp (v6) on waydroid0   ALLOW IN    Anywhere (v6)             
+[19] Anywhere (v6)              ALLOW FWD   Anywhere (v6) on waydroid0
+[20] Anywhere (v6) on waydroid0 ALLOW FWD   Anywhere (v6)              (out)
+

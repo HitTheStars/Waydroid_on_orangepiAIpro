@@ -1,0 +1,5 @@
+[Unit]
+Description=wd cp
+[Service]
+Type=oneshot
+ExecStart=/bin/sh /home/HwHiAiUser/data/workspaces/napcat_FriendMessage_1272063565/arkplan/launcher/wd_task2.sh
