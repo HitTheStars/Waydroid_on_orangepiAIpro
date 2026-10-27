@@ -1,0 +1,10 @@
+# arkplan 资产校验清单  生成于 2026-10-28 05:28:25
+# 用法: sha256sum -c assets.sha256    (缺失/路径不同时用 --ignore-missing)
+ba4da2882999bc09a63eab5f2b02a77cdce13df0b72b98fea58a4d7ccb125f4d  1994985472  /root/wd-img-backup-1027_2222/system.img
+ee5162dbbba865b87792f9f8054ec9c2864fc3750c441f06429188e73ee0e348  421629952  /root/wd-img-backup-1027_2222/vendor.img
+1a505eb9bc722ac24f05666e1e3536bd8fb4ed931dc70678a5699ea3a1cf368a  1861585573  /home/HwHiAiUser/data/arkplan/apk/arknights-hg-2781.apk
+8b174d920cac6ad5732d2e479e2219e997df647d0188b5d55769234909d0801a  3117696  /home/HwHiAiUser/data/workspaces/napcat_FriendMessage_1272063565/arkplan/src/binder-nofs2/binder_linux_nofs.ko
+aad124259113be8731855925eb620f6ad986b00c13c6b8bfde3b9027070e729b  3418200  /home/HwHiAiUser/data/workspaces/napcat_FriendMessage_1272063565/arkplan/src/binder-mod/binder_linux.ko
+564ac6010bbef04059e839a2cda444e8dd76c77c0510ad6df971da8eac346b7a  685712  /home/HwHiAiUser/data/workspaces/napcat_FriendMessage_1272063565/arkplan/src/ashmem-mod/ashmem_mod.ko
+0338bd136d566fbdc2963bbb1b72cfb0c47f7286e0a714c680efa699c4649e74  10155856  /home/HwHiAiUser/data/workspaces/napcat_FriendMessage_1272063565/arkplan/state/overlay_rw_system/lib64/libart.so
+6c3eb1334bb1eeabda391d44f1b0ad580e62700bd1485bd633fdbee70f8f2fbc  9143  /home/HwHiAiUser/data/workspaces/napcat_FriendMessage_1272063565/arkplan/state/etc/waydroid-net.sh.modified
