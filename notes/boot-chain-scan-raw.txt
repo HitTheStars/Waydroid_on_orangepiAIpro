@@ -1,0 +1,26 @@
+=== cmdline ===
+console=ttyAMA0,115200 log_redirect=0x1fc000@0x22741000 root=PARTUUID=9ddd8ab1-4b44-4fbd-9f12-0f4341e9056f rw rdinit=/sbin/init rodata=off syslog earlycon=pl011,mmio32,0xC4010000 initrd=0x2BA00000,300M rootwait mpam=of enable_ascend_share_pool ascend_enable_all enable_sp_multi_group_mode init_all_gicr enable_fpga no_console_suspend use_kallsyms_lookup_symbol selinux=0 systemd.unified_cgroup_hierarchy=0 fbcon=map:6 movable_node cma=256M rootfstype=ext4  reboot_reason=DEVICE_COLDBOOT
+
+=== lsblk ===
+NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+mmcblk1     179:0    0 119.1G  0 disk 
+├─mmcblk1p1 179:1    0     1M  0 part /media/HwHiAiUser/reserved_fs
+├─mmcblk1p2 179:2    0 118.8G  0 part /
+└─mmcblk1p3 179:3    0    50M  0 part /exchange
+=== /exchange ===
+总计 22
+drwxr-xr-x  2 root root 16384 Jan  1  1970 .
+drwxr-xr-x 23 root root  4096 May 28 20:25 ..
+-rwxr-xr-x  1 root root  2021 Sep 22  2025 config.ini
+=== /boot ===
+总计 8
+drwxr-xr-x  2 root root 4096 Apr 18  2022 .
+drwxr-xr-x 23 root root 4096 May 28 20:25 ..
+=== headers ===
+lrwxrwxrwx 1 root root 30 Sep  3  2024 /lib/modules/5.10.0+/build -> /usr/src/linux-headers-5.10.0+
+=== kallsyms ===
+0000000000000000 t _head
+0000000000000000 T _text
+=== swap ===
+-rw------- 1 root root 8.0G May 28 20:32 /swapfile
+/swapfile none swap sw 0 0

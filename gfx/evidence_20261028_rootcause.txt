@@ -1,0 +1,31 @@
+根因证据摘录（2026-10-28 修复前/中，容器时区 GMT）
+
+[1] 修复前，bootanimation 每次分配 GraphicBuffer 都崩：DRM node 打不开
+10-27 17:58:19.997 14118 14301 I [minigbm:gbm_mesa_internals.cpp(214)]: Using device /dev/dri/renderD128 as requested by gralloc.gbm.device
+10-27 17:58:19.997 14118 14301 E [minigbm:gbm_mesa_internals.cpp(183)]: Unable to open /dev/dri/renderD128 with error Permission denied
+10-27 17:58:19.997 14118 14301 E [minigbm:gbm_mesa_internals.cpp(228)]: Unable to find or open DRM node
+10-27 17:58:20.150 14118 14301 F DEBUG   :       #00 pc 0000000000012298  /vendor/lib64/libminigbm_gralloc_gbm_mesa.so (gbm_mesa_bo_import(bo*, drv_import_fd_data*)+320)
+10-27 17:58:34.158 14906 14944 W EGL-MAIN: failed to open /dev/dri/renderD128: Permission denied
+10-27 17:58:34.158 14906 14944 W EGL-MAIN: droid_open_device() Failed to open DRM device /dev/dri/renderD128
+
+反汇编 libminigbm_gralloc_gbm_mesa.so（x0=x1=0 的由来）：
+ 1227c: ldr x0, [x19]        ; bo->drv
+ 12288: bl  0x11d80          ; helper: 建立/取 gbm device（内部 open DRM node）
+ 1228c: ldr x28, [sp,#16]    ; 失败时不填 → 0
+ 12298: ldr x27, [x28]       ; ← 崩溃点 +320，x28=NULL
+
+[2] 修完权限后：32 位 zygote 缺失
+ 10-27 17:59:04.052 E AndroidRuntime: java.lang.RuntimeException: Failed to inform zygote of boot_completed
+ 10-27 17:59:04.052 E AndroidRuntime: Caused by: android.os.ZygoteStartFailedEx: Error connecting to zygote
+ 10-27 17:59:04.052 E AndroidRuntime:   at android.os.ZygoteProcess.attemptConnectionToSecondaryZygote(ZygoteProcess.java:1071)
+ 10-27 17:59:04.052 E AndroidRuntime: Caused by: java.io.IOException: No such file or directory
+ /vendor/odm/etc/build.prop: ro.odm.product.cpu.abilist=arm64-v8a,armeabi-v7a,armeabi   ← 被 init 派生为 ro.product.cpu.abilist
+
+[3] 修完 abilist 后：keystore2 数据库属主
+ 10-27 18:04:56.810 E AndroidRuntime: *** FATAL EXCEPTION IN SYSTEM PROCESS: LockSettingsService
+ 10-27 18:04:56.810 E AndroidRuntime: java.lang.AssertionError: 4
+ 10-27 18:04:56.810 E AndroidRuntime:   at android.security.KeyStore.state(KeyStore.java:67)
+ keystore2 tombstone: Abort message: 'Failed to open database.: Failed to attach database persistent.
+   0: unable to open database: file:/data/misc/keystore/persistent.sqlite
+   1: Error code 14: Unable to open the database file'
+ 现场: -rw------- 1 system system 77824 persistent.sqlite  (keystore2 跑 uid 1017)

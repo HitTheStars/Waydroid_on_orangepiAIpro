@@ -1,0 +1,45 @@
+=== container: boot/services ===
+boot_completed=1
+surfaceflinger=running
+zygote=running
+audioserver=running
+vendor.audio-hal=running
+bootanim=stopped
+
+=== container: ip addr ===
+2: eth0    inet 192.168.240.112/24 brd 192.168.240.255 scope global eth0\       valid_lft forever preferred_lft forever
+2: eth0    inet6 fe80::3675:479c:c77c:6dbc/64 scope link stable-privacy \       valid_lft forever preferred_lft forever
+
+=== container: ip route (main) ===
+192.168.240.0/24 dev eth0 proto kernel scope link src 192.168.240.112
+
+=== container: ip route table eth0 ===
+default via 192.168.240.1 dev eth0 proto static 
+192.168.240.0/24 dev eth0 proto static scope link
+
+=== container: ip rule (tail) ===
+18000:	from all fwmark 0x0/0x10000 lookup legacy_system 
+19000:	from all fwmark 0x0/0x10000 lookup legacy_network 
+20000:	from all fwmark 0x0/0x10000 lookup local_network 
+22998:	from all fwmark 0x64/0x1ffff iif lo uidrange 0-2147483647 lookup eth0 
+25000:	from all fwmark 0x0/0x10000 iif lo uidrange 0-2147483647 lookup eth0_local 
+29998:	from all fwmark 0x0/0xffff iif lo uidrange 0-2147483647 lookup eth0 
+31000:	from all fwmark 0xc0000/0xcffff iif lo lookup eth0 
+32000:	from all unreachable
+
+=== container: dhcp lease (host file, seen from host) ===
+
+
+=== container: ping 223.5.5.5 ===
+2 packets transmitted, 2 received, 0% packet loss, time 1000ms
+rtt min/avg/max/mdev = 9.759/11.664/13.569/1.905 ms
+
+=== container: resolve www.baidu.com ===
+PING www.a.shifen.com (157.148.69.186) 56(84) bytes of data.
+64 bytes from 157.148.69.186: icmp_seq=1 ttl=53 time=13.8 ms
+
+=== container: curl -sI https://www.baidu.com ===
+HTTP/1.1 200 OK
+Cache-Control: private, no-cache, no-store, proxy-revalidate, no-transform
+Content-Length: 0
+Content-Type: text/html

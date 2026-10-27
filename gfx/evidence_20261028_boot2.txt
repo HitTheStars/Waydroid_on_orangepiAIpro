@@ -1,0 +1,36 @@
+=== date
+Tue Oct 27 18:13:03 GMT 2026
+=== props
+sys.boot_completed = 1
+ro.hardware.gralloc = minigbm_gbm_mesa
+ro.hardware.egl = mesa
+ro.hardware.vulkan = panfrost
+ro.product.cpu.abilist = arm64-v8a
+ro.product.cpu.abilist32 = 
+ro.zygote = zygote64
+=== services
+init.svc.zygote = running
+init.svc.surfaceflinger = running
+init.svc.bootanim = stopped
+init.svc.audioserver = running
+init.svc.vendor.audio-hal = running
+init.svc.vndservicemanager = running
+=== /dev/dri
+total 0
+crw-rw-rw- 1 0 1003 226,   0 2026-10-27 18:10 card0
+crw-rw-rw- 1 0 1003 226,   1 2026-10-27 18:10 card1
+crw-rw-rw- 1 0 109  226, 128 2026-10-27 18:10 renderD128
+=== crash buffer: gbm_mesa_bo_import / FATAL counts
+gbm_mesa_bo_import = 0
+FATAL EXCEPTION    = 0
+crash lines total  = 63
+=== procs
+     34 keystore2
+    237 zygote64
+    261 surfaceflinger
+    317 system_server
+    491 com.android.systemui
+    581 webview_zygote
+=== ELFCLASS32 process count
+ELFCLASS32 processes = 0
+=== done

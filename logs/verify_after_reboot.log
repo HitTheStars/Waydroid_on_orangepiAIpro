@@ -1,0 +1,14 @@
+sys.boot_completed=[]
+init.svc.vendor.audio-hal=[running]
+init.svc.audioserver=[running]
+init.svc.zygote=[running]
+init.svc.surfaceflinger=[running]
+-- audiohalservice log --
+--------- beginning of main
+10-27 17:51:55.191  1080  1080 I audiohalservice: Registered android.hardware.audio@4.0::IDevicesFactory
+10-27 17:51:55.204  1080  1080 I audiohalservice: Registered android.hardware.audio.effect@4.0::IEffectsFactory
+10-27 17:51:55.204  1080  1080 I audiohalservice: audio HAL service ready, joining rpc threadpool
+-- 32bit exec errors --
+0
+-- AudioPolicyService waiting --
+0

@@ -1,0 +1,13 @@
+=== container: connectivity validation ===
+21 VALIDATED
+DnsAddresses: [ /192.168.240.1 ]
+Routes: [ fe80::/64 -> :: eth0 mtu 0,192.168.240.0/24 -> 0.0.0.0 eth0 mtu 0,0.0.0.0/0 -> 192.168.240.1 eth0 mtu 0 ]
+=== container: resolver used by apps (NetworkMonitor) ===
+10-27 18:31:39.131   775   924 D NetworkMonitor: Starting on network 100 with capport HTTPS URL [https://connect.rom.miui.com/generate_204] and HTTP URL [http://connect.rom.miui.co
+=== host: dnsmasq lease ===
+1793129498 00:16:3e:f9:d3:03 192.168.240.112 OPi-Ai-Pro-20T 01:00:16:3e:f9:d3:03
+=== host: waydroid-net.sh iptables 落点（legacy） ===
+iptables - 自动模式
+  最佳链接版本为 /usr/sbin/iptables-nft
+  链接目前指向 /usr/sbin/iptables-nft
+  链接 iptables 指向 /usr/sbin/iptables

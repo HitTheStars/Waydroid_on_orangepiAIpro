@@ -1,0 +1,1 @@
+cp /home/HwHiAiUser/data/workspaces/napcat_FriendMessage_1272063565/arkplan/launcher/wd_out.txt /home/HwHiAiUser/data/workspaces/napcat_FriendMessage_1272063565/arkplan/launcher/wd_step1.txt; chmod 666 /home/HwHiAiUser/data/workspaces/napcat_FriendMessage_1272063565/arkplan/launcher/wd_step1.txt

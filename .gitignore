@@ -1,0 +1,17 @@
+# 大件与构建产物：不入库
+/downloads/
+/src/rea/
+/logs/kmsg_*.log
+*.apk
+*.img
+*.zip
+*.iso
+*.o
+*.cmd
+*.order
+*.symvers
+*.mod
+*.ko.unsigned
+/.tmp_versions/
+__pycache__/
+*.pyc

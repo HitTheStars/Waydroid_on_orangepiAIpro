@@ -1,0 +1,20 @@
+=== /exchange (50M vfat) ===
+总计 22
+drwxr-xr-x  2 root root 16384 Jan  1  1970 .
+drwxr-xr-x 23 root root  4096 May 28 20:25 ..
+-rwxr-xr-x  1 root root  2021 Sep 22  2025 config.ini
+=== /media/.../reserved_fs (1M) ===
+总计 24
+drwxr-xr-x  3 root root  4096 Sep 22  2025 .
+drwxr-x---+ 3 root root  4096 Oct 22 10:18 ..
+drwx------  2 root root 16384 Sep 22  2025 lost+found
+=== /fw ===
+ls: 无法打开目录 '/fw': 权限不够
+=== /service_config.sh ===
+-rwxr-x--- 1 root root 1093 Jan 23  2024 /service_config.sh
+head: 无法以读模式打开 '/service_config.sh': 权限不够
+=== swap ===
+/bin/sh: 行 1: swapon: 未找到命令
+-rw------- 1 root root 8.0G May 28 20:32 /swapfile
+=== modules 目录大小 ===
+79M	/lib/modules/5.10.0+

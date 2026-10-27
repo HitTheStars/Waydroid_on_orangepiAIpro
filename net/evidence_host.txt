@@ -1,0 +1,49 @@
+=== [host] ip -br a ===
+lo               UNKNOWN        127.0.0.1/8 
+eth0             DOWN           
+eth1             DOWN           
+can2             DOWN           
+bond0            DOWN           
+lxcbr0           DOWN           10.0.3.1/24 
+usb0             DOWN           
+wlan0            UP             10.250.192.128/16 fe80::3705:5fad:a5b4:217e/64 
+docker0          UP             172.17.0.1/16 
+veth5ad4ea1@if10 UP             
+waydroid0        UP             192.168.240.1/24 
+vethxkPJiU@if2   UP             
+
+=== [host] ip r ===
+default via 10.250.0.1 dev wlan0 proto dhcp metric 600 
+10.0.3.0/24 dev lxcbr0 proto kernel scope link src 10.0.3.1 linkdown 
+10.250.0.0/16 dev wlan0 proto kernel scope link src 10.250.192.128 metric 600 
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 
+192.168.240.0/24 dev waydroid0 proto kernel scope link src 192.168.240.1 
+
+=== [host] ip_forward ===
+1
+
+=== [host] iptables -S ufw-user-forward / ufw-user-input(waydroid0) ===
+-A ufw-user-forward -i waydroid0 -j ACCEPT
+-A ufw-user-forward -o waydroid0 -j ACCEPT
+-A ufw-user-input -i waydroid0 -p udp -m udp --dport 67 -j ACCEPT
+-A ufw-user-input -i waydroid0 -p udp -m udp --dport 53 -j ACCEPT
+-A ufw-user-input -i waydroid0 -p tcp -m tcp --dport 53 -j ACCEPT
+
+=== [host] iptables-legacy FORWARD + nat POSTROUTING ===
+-P FORWARD ACCEPT
+-A FORWARD -o waydroid0 -j ACCEPT
+-A FORWARD -i waydroid0 -j ACCEPT
+-P POSTROUTING ACCEPT
+-A POSTROUTING -s 192.168.240.0/24 ! -d 192.168.240.0/24 -j MASQUERADE
+
+=== [host] ufw status numbered (route rules) ===
+[ 6] 67/udp on waydroid0        ALLOW IN    Anywhere                  
+[ 7] 53/udp on waydroid0        ALLOW IN    Anywhere                  
+[ 8] 53/tcp on waydroid0        ALLOW IN    Anywhere                  
+[ 9] Anywhere                   ALLOW FWD   Anywhere on waydroid0     
+[10] Anywhere on waydroid0      ALLOW FWD   Anywhere                   (out)
+[16] 67/udp (v6) on waydroid0   ALLOW IN    Anywhere (v6)             
+[17] 53/udp (v6) on waydroid0   ALLOW IN    Anywhere (v6)             
+[18] 53/tcp (v6) on waydroid0   ALLOW IN    Anywhere (v6)             
+[19] Anywhere (v6)              ALLOW FWD   Anywhere (v6) on waydroid0
+[20] Anywhere (v6) on waydroid0 ALLOW FWD   Anywhere (v6)              (out)

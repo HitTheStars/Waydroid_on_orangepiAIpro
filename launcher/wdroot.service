@@ -1,0 +1,5 @@
+[Unit]
+Description=waydroid root helper (temporary)
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'sh /home/HwHiAiUser/data/workspaces/napcat_FriendMessage_1272063565/arkplan/launcher/wd_task.sh > /home/HwHiAiUser/data/workspaces/napcat_FriendMessage_1272063565/arkplan/launcher/wd_out.txt 2>&1; chmod 666 /home/HwHiAiUser/data/workspaces/napcat_FriendMessage_1272063565/arkplan/launcher/wd_out.txt'
